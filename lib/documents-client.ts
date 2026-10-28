@@ -1,0 +1,12 @@
+export async function readDocument(file:File,onProgress:(s:string)=>void):Promise<string>{
+ if(file.type==='text/csv'||file.type==='text/plain'||/\.(csv|txt)$/i.test(file.name)){const text=await file.text();if(text.length>50000)throw new Error('This statement is too long. Export a shorter date range (up to 50,000 characters).');return text}
+ if(file.type==='application/pdf'){
+  onProgress('Reading the PDF…');const pdfjs=await import('pdfjs-dist');const worker=await import('pdfjs-dist/build/pdf.worker.min.mjs?url');pdfjs.GlobalWorkerOptions.workerSrc=worker.default;
+  const task=pdfjs.getDocument({data:new Uint8Array(await file.arrayBuffer())});const pdf=await task.promise;
+  if(pdf.numPages>10){await task.destroy();throw new Error('Upload a statement of up to 10 pages. Split longer statements first.')}
+  let result='';try{for(let n=1;n<=pdf.numPages;n++){onProgress(`Reading page ${n} of ${pdf.numPages}…`);const page=await pdf.getPage(n),content=await page.getTextContent();let text=content.items.map((x:any)=>x.str+(x.hasEOL?'\n':' ')).join('');if(text.replace(/\s/g,'').length<30){if(pdf.numPages>5)throw new Error('Scanned statements support up to 5 pages. Split this file or use a text-based PDF.');onProgress(`Recognizing scanned page ${n}…`);const viewport=page.getViewport({scale:1.5}),canvas=document.createElement('canvas');canvas.width=viewport.width;canvas.height=viewport.height;const context=canvas.getContext('2d');if(!context)throw new Error('Image processing is unavailable in this browser.');await page.render({canvasContext:context,viewport,canvas}).promise;text=await ocr(canvas,onProgress);canvas.width=canvas.height=0}result+=`\nPage ${n}\n`+text;if(result.length>50000)throw new Error('This statement is too long. Upload a shorter date range.')}}finally{await task.destroy()}return result;
+ }
+ if(file.type.startsWith('image/'))return ocr(file,onProgress);
+ throw new Error('Choose PDF, CSV, TXT, PNG, JPG or WebP.');
+}
+async function ocr(image:File|HTMLCanvasElement,onProgress:(s:string)=>void){const {createWorker}=await import('tesseract.js');const workerUrl=await import('tesseract.js/dist/worker.min.js?url');const w=await createWorker('eng',1,{workerPath:workerUrl.default,logger:m=>{if(m.status==='recognizing text')onProgress('Reading image… '+Math.round(m.progress*100)+'%')}});try{const {data}=await w.recognize(image);return data.text}finally{await w.terminate()}}

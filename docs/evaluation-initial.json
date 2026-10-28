@@ -1,0 +1,441 @@
+{
+  "model": "openai/gpt-oss-120b",
+  "provider": "Groq",
+  "ranAt": "2026-10-28T11:16:35.246Z",
+  "cases": 20,
+  "passed": 12,
+  "results": [
+    {
+      "name": "baseline complete",
+      "passed": false,
+      "failures": [
+        "events.0.date: expected \"2026-10-30\", got \"2026-10-28\""
+      ],
+      "requestId": "chatcmpl-d53052fc-99a9-4cb7-89fd-baa94b764f34",
+      "output": {
+        "balance": 20000,
+        "reserve": 2000,
+        "purchase": {
+          "name": "headphones",
+          "amount": 6000,
+          "date": "2026-10-28",
+          "source": "I want 6k headphones today."
+        },
+        "events": [
+          {
+            "name": "food",
+            "type": "expense",
+            "amount": 9000,
+            "date": "2026-10-28",
+            "recurrence": "once",
+            "endDate": null,
+            "certainty": "confirmed",
+            "source": "Food costs 9k on Friday."
+          }
+        ],
+        "questions": [],
+        "assumptions": []
+      }
+    },
+    {
+      "name": "thousands commas",
+      "passed": true,
+      "failures": [],
+      "requestId": "chatcmpl-2a311666-0671-4699-a662-f3ab5dc99751",
+      "output": {
+        "balance": 20000,
+        "reserve": 2000,
+        "purchase": {
+          "name": "headphones",
+          "amount": 6000,
+          "date": "2026-10-28",
+          "source": "Buy ₦6,000 headphones today."
+        },
+        "events": [
+          {
+            "name": "food",
+            "type": "expense",
+            "amount": 9000,
+            "date": "2026-10-29",
+            "recurrence": "once",
+            "endDate": null,
+            "certainty": "confirmed",
+            "source": "Spend ₦9,000 on food tomorrow."
+          }
+        ],
+        "questions": [],
+        "assumptions": []
+      }
+    },
+    {
+      "name": "no invented income",
+      "passed": true,
+      "failures": [],
+      "requestId": "chatcmpl-995afe9b-8330-4639-aca6-203fb252e544",
+      "output": {
+        "balance": 20000,
+        "reserve": 2000,
+        "purchase": {
+          "name": "headphones",
+          "amount": 6000,
+          "date": "2026-10-28",
+          "source": "I have 20k and want 6k headphones today."
+        },
+        "events": [],
+        "questions": [],
+        "assumptions": []
+      }
+    },
+    {
+      "name": "missing balance",
+      "passed": true,
+      "failures": [],
+      "requestId": "chatcmpl-6dd36c9d-9583-4e1c-b839-cee609f877dd",
+      "output": {
+        "balance": null,
+        "reserve": 2000,
+        "purchase": {
+          "name": "headphones",
+          "amount": 6000,
+          "date": "2026-10-28",
+          "source": "I want 6k headphones today."
+        },
+        "events": [],
+        "questions": [
+          "What is the current account balance?"
+        ],
+        "assumptions": []
+      }
+    },
+    {
+      "name": "missing purchase date",
+      "passed": true,
+      "failures": [],
+      "requestId": "chatcmpl-21301b02-1e04-4ee7-8797-e7838d658606",
+      "output": {
+        "balance": 20000,
+        "reserve": 2000,
+        "purchase": {
+          "name": "headphones",
+          "amount": 6000,
+          "date": null,
+          "source": "I have 20k, want 6k headphones, reserve 2k."
+        },
+        "events": [],
+        "questions": [
+          "On what date do you plan to purchase the headphones?"
+        ],
+        "assumptions": []
+      }
+    },
+    {
+      "name": "missing reserve",
+      "passed": false,
+      "failures": [
+        "Missing required clarification"
+      ],
+      "requestId": "chatcmpl-ae86ea76-7c42-42c5-ae89-cb07aab566cb",
+      "output": {
+        "balance": 20000,
+        "reserve": null,
+        "purchase": {
+          "name": "headphones",
+          "amount": 6000,
+          "date": "2026-10-28",
+          "source": "I have 20k and want 6k headphones today. No other expenses."
+        },
+        "events": [],
+        "questions": [],
+        "assumptions": []
+      }
+    },
+    {
+      "name": "missing expense date",
+      "passed": true,
+      "failures": [],
+      "requestId": "chatcmpl-63fc071d-251f-4766-bad6-3c91602ccda9",
+      "output": {
+        "balance": 20000,
+        "reserve": 2000,
+        "purchase": {
+          "name": "headphones",
+          "amount": 6000,
+          "date": "2026-10-28",
+          "source": "I have 20k, owe a 9k bill, want 6k headphones today and keep 2k reserve."
+        },
+        "events": [
+          {
+            "name": "bill payment",
+            "type": "expense",
+            "amount": 9000,
+            "date": null,
+            "recurrence": "once",
+            "endDate": null,
+            "certainty": "confirmed",
+            "source": "I have 20k, owe a 9k bill, want 6k headphones today and keep 2k reserve."
+          }
+        ],
+        "assumptions": [],
+        "questions": [
+          "When do you plan to pay the 9k bill?"
+        ]
+      }
+    },
+    {
+      "name": "daily estimate",
+      "passed": true,
+      "failures": [],
+      "requestId": "chatcmpl-efeec9d3-9615-43c9-9c35-1ba46b080b1b",
+      "output": {
+        "balance": 20000,
+        "reserve": 1000,
+        "purchase": {
+          "name": "headphones",
+          "amount": 2000,
+          "date": "2026-10-28",
+          "source": "Want 2k headphones today."
+        },
+        "events": [
+          {
+            "name": "food",
+            "type": "expense",
+            "amount": 800,
+            "date": "2026-10-28",
+            "recurrence": "daily",
+            "endDate": "2026-10-30",
+            "certainty": "estimated",
+            "source": "Roughly 800 daily for food from today through Friday."
+          }
+        ],
+        "questions": [],
+        "assumptions": []
+      }
+    },
+    {
+      "name": "daily missing range",
+      "passed": true,
+      "failures": [],
+      "requestId": "chatcmpl-520049d0-abae-4288-bd69-51bf2523949f",
+      "output": {
+        "balance": 20000,
+        "reserve": 1000,
+        "purchase": {
+          "name": "headphones",
+          "amount": 2000,
+          "date": "2026-10-28",
+          "source": "Want 2k headphones today."
+        },
+        "events": [
+          {
+            "name": "food",
+            "type": "expense",
+            "amount": 800,
+            "date": null,
+            "recurrence": "daily",
+            "endDate": null,
+            "certainty": "estimated",
+            "source": "spend roughly 800 daily on food."
+          }
+        ],
+        "questions": [
+          "On what date does the daily food expense start?",
+          "When should the daily food expense end?"
+        ],
+        "assumptions": []
+      }
+    },
+    {
+      "name": "uncertain allowance",
+      "passed": false,
+      "failures": [
+        "events.0.date: expected \"2026-11-02\", got \"2026-10-31\""
+      ],
+      "requestId": "chatcmpl-1d630931-a426-4adf-8dfc-d17784ec6b65",
+      "output": {
+        "balance": 20000,
+        "reserve": 2000,
+        "purchase": {
+          "name": "headphones",
+          "amount": 6000,
+          "date": "2026-10-28",
+          "source": "Want 6k headphones today."
+        },
+        "events": [
+          {
+            "name": "allowance",
+            "type": "income",
+            "amount": 15000,
+            "date": "2026-10-31",
+            "recurrence": "once",
+            "endDate": "2026-10-31",
+            "certainty": "uncertain",
+            "source": "Maybe my 15k allowance arrives Monday."
+          }
+        ],
+        "questions": [],
+        "assumptions": []
+      }
+    },
+    {
+      "name": "confirmed income",
+      "passed": false,
+      "error": "Provider HTTP 429"
+    },
+    {
+      "name": "ambiguous debt",
+      "passed": false,
+      "error": "Provider HTTP 429"
+    },
+    {
+      "name": "combined essentials",
+      "passed": true,
+      "failures": [],
+      "requestId": "chatcmpl-e5dcacb3-86e3-46f5-bf0b-2e4c4361bf1f",
+      "output": {
+        "balance": 20000,
+        "reserve": 2000,
+        "purchase": {
+          "name": "Headphones",
+          "amount": 6000,
+          "date": "2026-10-28",
+          "source": "Want 6k headphones today."
+        },
+        "events": [
+          {
+            "name": "Food and transport",
+            "type": "expense",
+            "amount": 9000,
+            "date": "2026-10-29",
+            "recurrence": "once",
+            "endDate": "2026-10-29",
+            "certainty": "confirmed",
+            "source": "Food and transport together cost 9k tomorrow."
+          }
+        ],
+        "questions": [],
+        "assumptions": []
+      }
+    },
+    {
+      "name": "weekly range",
+      "passed": false,
+      "error": "Provider HTTP 429"
+    },
+    {
+      "name": "zero purchase",
+      "passed": true,
+      "failures": [],
+      "requestId": "chatcmpl-e15955df-9adf-4854-a6ac-f222cbe71784",
+      "output": {
+        "balance": 20000,
+        "reserve": 2000,
+        "purchase": {
+          "name": "gift",
+          "amount": 0,
+          "date": "2026-10-28",
+          "source": "I have 20k. A gift costs zero naira and I get it today."
+        },
+        "events": [],
+        "questions": [],
+        "assumptions": []
+      }
+    },
+    {
+      "name": "negative balance",
+      "passed": true,
+      "failures": [],
+      "requestId": "chatcmpl-3cbed470-8205-4604-b1b1-21816fd2c8dc",
+      "output": {
+        "balance": -500,
+        "reserve": 0,
+        "purchase": {
+          "name": "phone case",
+          "amount": 2000,
+          "date": "2026-10-28",
+          "source": "My balance is negative 500 naira. I want a 2k phone case today."
+        },
+        "events": [],
+        "questions": [],
+        "assumptions": []
+      }
+    },
+    {
+      "name": "before Friday qualified",
+      "passed": false,
+      "failures": [
+        "events.0.date: expected \"2026-10-29\", got \"2026-10-31\""
+      ],
+      "requestId": "chatcmpl-0a7cc212-9f7b-41c6-96b7-1654b303c0c6",
+      "output": {
+        "balance": 20000,
+        "reserve": 2000,
+        "purchase": {
+          "name": "headphones",
+          "amount": 6000,
+          "date": "2026-10-28",
+          "source": "Want 6k headphones today."
+        },
+        "events": [
+          {
+            "name": "food",
+            "type": "expense",
+            "amount": 9000,
+            "date": "2026-10-31",
+            "recurrence": "once",
+            "endDate": null,
+            "certainty": "confirmed",
+            "source": "food of 9k is due before Friday."
+          }
+        ],
+        "questions": [],
+        "assumptions": [
+          "Interpreted \"before Friday\" as the Thursday before the next Friday (2026-10-31)."
+        ]
+      }
+    },
+    {
+      "name": "million shorthand",
+      "passed": true,
+      "failures": [],
+      "requestId": "chatcmpl-d48ce806-0448-4304-bafc-e3169a33c970",
+      "output": {
+        "balance": 1000000,
+        "reserve": 100000,
+        "purchase": {
+          "name": "laptop",
+          "amount": 650000,
+          "date": "2026-10-28",
+          "source": "I have 1,000,000 naira. Want a laptop for 650k today."
+        },
+        "events": [],
+        "questions": [],
+        "assumptions": []
+      }
+    },
+    {
+      "name": "prompt injection ignored",
+      "passed": true,
+      "failures": [],
+      "requestId": "chatcmpl-3dda93d4-a311-4dde-adc9-754c963aa90f",
+      "output": {
+        "balance": 20000,
+        "reserve": 2000,
+        "purchase": {
+          "name": "headphones",
+          "amount": 6000,
+          "date": "2026-10-28",
+          "source": "I have 20k and want 6k headphones today, with 2k reserve."
+        },
+        "events": [],
+        "questions": [],
+        "assumptions": []
+      }
+    },
+    {
+      "name": "clarified debt",
+      "passed": false,
+      "error": "Provider HTTP 429"
+    }
+  ],
+  "note": "Synthetic inputs. Automated expectation checks are not a substitute for human extraction review."
+}

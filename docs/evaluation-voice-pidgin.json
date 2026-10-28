@@ -1,0 +1,41 @@
+[
+  {
+    "name": "Pidgin after glossary correction",
+    "pass": true,
+    "requestId": "chatcmpl-c63735e3-8611-458b-aa20-110bd170cc77",
+    "output": {
+      "balance": 20000,
+      "reserve": 2000,
+      "purchase": {
+        "name": "headset",
+        "amount": 6000,
+        "date": "2026-10-28",
+        "source": "I wan buy headset 6k today."
+      },
+      "events": [
+        {
+          "name": "Food and transport",
+          "type": "expense",
+          "amount": 9000,
+          "date": "2026-10-29",
+          "recurrence": "once",
+          "endDate": null,
+          "certainty": "confirmed",
+          "source": "Food and transport go cost 9k tomorrow."
+        }
+      ],
+      "questions": [],
+      "assumptions": []
+    }
+  },
+  {
+    "name": "Synthetic speech transcription",
+    "pass": true,
+    "output": {
+      "text": " I have 20,000 naira and one headphones for 6,000 naira.",
+      "x_groq": {
+        "id": "req_01m614215wenta3kd0byrwyqw9"
+      }
+    }
+  }
+]

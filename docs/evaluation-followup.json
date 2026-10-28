@@ -1,0 +1,146 @@
+[
+  {
+    "name": "weekday extraction",
+    "pass": true,
+    "requestId": "chatcmpl-a2863652-8322-4b1d-b1a7-f02392f6dcb9",
+    "output": {
+      "balance": 20000,
+      "reserve": 2000,
+      "purchase": {
+        "name": "headphones",
+        "amount": 6000,
+        "date": "2026-10-28",
+        "source": "I want 6k headphones today."
+      },
+      "events": [
+        {
+          "name": "food",
+          "type": "expense",
+          "amount": 9000,
+          "date": "2026-10-30",
+          "recurrence": "once",
+          "endDate": null,
+          "certainty": "confirmed",
+          "source": "food costs 9k on Friday."
+        }
+      ],
+      "questions": [],
+      "assumptions": []
+    }
+  },
+  {
+    "name": "missing reserve guard",
+    "pass": true,
+    "requestId": "chatcmpl-a17e8712-9701-4a96-9f06-2af7e77ade47",
+    "output": {
+      "balance": 20000,
+      "reserve": null,
+      "purchase": {
+        "name": "headphones",
+        "amount": 6000,
+        "date": "2026-10-28",
+        "source": "I have 20k and want 6k headphones today."
+      },
+      "events": [],
+      "questions": [
+        "What is the reserve amount you have set aside?",
+        "What minimum reserve would you like to keep? Enter zero if you do not want a reserve."
+      ],
+      "assumptions": []
+    }
+  },
+  {
+    "name": "bank statement",
+    "pass": true,
+    "requestId": "chatcmpl-2acb3a51-60e9-4190-bd56-9c951ec99395",
+    "output": {
+      "institution": null,
+      "currency": "NGN",
+      "periodStart": "2026-10-01",
+      "periodEnd": "2026-10-27",
+      "closingBalance": 20000,
+      "transactions": [
+        {
+          "date": "2026-10-25",
+          "description": "Food",
+          "amount": 3000,
+          "type": "expense",
+          "category": "Food"
+        },
+        {
+          "date": "2026-10-26",
+          "description": "Allowance",
+          "amount": 15000,
+          "type": "income",
+          "category": "Allowance"
+        }
+      ],
+      "warnings": []
+    }
+  },
+  {
+    "name": "receipt",
+    "pass": true,
+    "requestId": "chatcmpl-06806fa2-7c21-4413-af9e-be4caa089e63",
+    "output": {
+      "institution": null,
+      "currency": "NGN",
+      "periodStart": null,
+      "periodEnd": null,
+      "closingBalance": null,
+      "transactions": [
+        {
+          "date": "2026-10-27",
+          "description": "Campus Store",
+          "amount": 8000,
+          "type": "expense",
+          "category": "receipt"
+        }
+      ],
+      "warnings": []
+    }
+  },
+  {
+    "name": "Pidgin description",
+    "pass": false,
+    "requestId": "chatcmpl-70f3e0e9-87d4-4a5f-bfc4-952289bfb4e3",
+    "output": {
+      "balance": null,
+      "reserve": 2000,
+      "purchase": {
+        "name": "headset",
+        "amount": 6000,
+        "date": "2026-10-28",
+        "source": "I wan buy headset 6k today."
+      },
+      "events": [
+        {
+          "name": "hand income",
+          "type": "income",
+          "amount": 20000,
+          "date": null,
+          "recurrence": "once",
+          "endDate": null,
+          "certainty": "confirmed",
+          "source": "I get 20k for hand."
+        },
+        {
+          "name": "Food and transport",
+          "type": "expense",
+          "amount": 9000,
+          "date": "2026-10-29",
+          "recurrence": "once",
+          "endDate": null,
+          "certainty": "confirmed",
+          "source": "Food and transport go cost 9k tomorrow."
+        }
+      ],
+      "questions": [
+        "On what date did you receive the 20k hand income?",
+        "What is your current balance after accounting for the listed transactions?",
+        "Do you expect any additional income or expenses before the horizon date (2026-11-04)?"
+      ],
+      "assumptions": []
+    }
+  }
+]

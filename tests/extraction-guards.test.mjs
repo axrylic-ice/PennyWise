@@ -1,0 +1,7 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {calendarContext,guardExtraction} from '../lib/extraction-guards.mjs';
+const output=()=>({balance:20000,reserve:2000,purchase:{name:'Headphones',amount:6000,date:'2026-10-28',source:'headphones today'},events:[],questions:[],assumptions:[]});
+test('calendar lookup handles week crossing month end',()=>{const c=calendarContext('2026-10-28');assert.equal(c.todayWeekday,'Wednesday');assert.equal(c.nextOccurrence.Friday,'2026-10-30');assert.equal(c.nextOccurrence.Monday,'2026-11-02')});
+test('missing reserve cannot pass without clarification',()=>{const o=output();o.reserve=null;assert.ok(guardExtraction(o,'2026-10-28').questions.some(q=>q.includes('reserve')))});
+test('wrong weekday date is withheld rather than silently applied',()=>{const o=output();o.events=[{name:'Food',amount:9000,date:'2026-10-28',source:'Food on Friday',recurrence:'once'}];const r=guardExtraction(o,'2026-10-28');assert.equal(r.events[0].date,null);assert.ok(r.questions.some(q=>q.includes('2026-10-30')))});
+test('correct weekday date preserved',()=>{const o=output();o.events=[{name:'Food',amount:9000,date:'2026-10-30',source:'Food on Friday',recurrence:'once'}];assert.equal(guardExtraction(o,'2026-10-28').events[0].date,'2026-10-30')});
+test('before weekday interpretation checked',()=>{const o=output();o.events=[{name:'Food',amount:9000,date:'2026-10-31',source:'food before Friday',recurrence:'once'}];assert.ok(guardExtraction(o,'2026-10-28').questions.some(q=>q.includes('2026-10-29')))});
